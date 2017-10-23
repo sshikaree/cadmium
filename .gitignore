@@ -1,0 +1,11 @@
+# Generated at compile time.
+
+darwin/*
+deploy/*
+rcc*
+
+# MacOS shit
+*DS_Store*
+
+# Vendored things.
+vendor/*
