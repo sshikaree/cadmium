@@ -72,11 +72,11 @@ func (m *MainWindow) Initialize() {
 	// Restoring window size.
 	savedWinSizeWidthStr := c.Config.GetValue("/mainwindow/width")
 	savedWinSizeHeightStr := c.Config.GetValue("/mainwindow/height")
-	m.windowWidth, err = strconv.Atoi(winSizeWidthStr)
+	m.windowWidth, err = strconv.Atoi(savedWinSizeWidthStr)
 	if err != nil {
 		m.windowWidth = DEFAULT_WIN_WIDTH
 	}
-	m.windowHeight, err = strconv.Atoi(winSizeHeightStr)
+	m.windowHeight, err = strconv.Atoi(savedWinSizeHeightStr)
 	if err != nil {
 		m.windowHeight = DEFAULT_WIN_HEIGHT
 	}
