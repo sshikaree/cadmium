@@ -33,10 +33,19 @@ import (
 	"github.com/therecipe/qt/widgets"
 )
 
+const (
+	DEFAULT_WIN_POS_X = 50
+	DEFAULT_WIN_POS_Y = 50
+
+	DEFAULT_WIN_WIDTH  = 1000
+	DEFAULT_WIN_HEIGHT = 600
+)
+
 // Initialize initializes main window.
 func (m *MainWindow) Initialize() {
 	c.Log.Infoln("Initializing main window...")
 
+	var err error
 	m.app = widgets.NewQApplication(len(os.Args), os.Args)
 	m.app.SetAttribute(core.Qt__AA_EnableHighDpiScaling, true)
 	m.app.SetAttribute(core.Qt__AA_UseHighDpiPixmaps, true)
@@ -49,33 +58,29 @@ func (m *MainWindow) Initialize() {
 	m.window.SetWindowTitle("Cadmium IM")
 
 	// Restoring window position.
-	var winPosXStr string = "0"
-	var winPosYStr string = "0"
 	savedWinPosXStr := c.Config.GetValue("/mainwindow/position_x")
-	if savedWinPosXStr != "" {
-		winPosXStr = savedWinPosXStr
-	}
 	savedWinPosYStr := c.Config.GetValue("/mainwindow/position_y")
-	if savedWinPosYStr != "" {
-		winPosYStr = savedWinPosYStr
+	winPosX, err := strconv.Atoi(savedWinPosXStr)
+	if err != nil {
+		winPosX = DEFAULT_WIN_POS_X
 	}
-	winPosX, _ := strconv.Atoi(winPosXStr)
-	winPosY, _ := strconv.Atoi(winPosYStr)
+	winPosY, err := strconv.Atoi(savedWinPosYStr)
+	if err != nil {
+		winPosY = DEFAULT_WIN_POS_Y
+	}
 
 	// Restoring window size.
-	var winSizeWidthStr string = "1000"
-	var winSizeHeightStr string = "600"
 	savedWinSizeWidthStr := c.Config.GetValue("/mainwindow/width")
-	if savedWinSizeWidthStr != "" {
-		winSizeWidthStr = savedWinSizeWidthStr
-	}
 	savedWinSizeHeightStr := c.Config.GetValue("/mainwindow/height")
-	if savedWinSizeHeightStr != "" {
-		winSizeHeightStr = savedWinSizeHeightStr
+	m.windowWidth, err = strconv.Atoi(winSizeWidthStr)
+	if err != nil {
+		m.windowWidth = DEFAULT_WIN_WIDTH
+	}
+	m.windowHeight, err = strconv.Atoi(winSizeHeightStr)
+	if err != nil {
+		m.windowHeight = DEFAULT_WIN_HEIGHT
 	}
 
-	m.windowWidth, _ = strconv.Atoi(winSizeWidthStr)
-	m.windowHeight, _ = strconv.Atoi(winSizeHeightStr)
 	m.window.SetGeometry2(winPosX, winPosY, m.windowWidth, m.windowHeight)
 
 	widget := widgets.NewQWidget(nil, 0)
